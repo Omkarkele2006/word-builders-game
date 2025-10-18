@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Builders Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="w-full max-w-md mx-auto text-center bg-white p-8 rounded-3xl shadow-xl">
+    <h1 class="text-5xl font-bold text-violet-600 mb-4 title-text">Word Builders</h1>
+    <p class="text-gray-500 mb-8">A fun game for ZPPS Umbadga Students</p>
+    <form id="player-form" class="flex flex-col gap-4">
+      <input type="text" id="player-name" class="form-input" placeholder="Enter your full name" required>
+      <input type="text" id="player-school" class="form-input" placeholder="Enter your school name"
+        value="ZPPS Umbadga bk" required>
+      <select id="player-std" class="form-input bg-white">
+        <option value="" disabled selected>Select your class</option>
+        <script>for (let i = 1; i <= 10; i++) { document.write(`<option value="${i}">${i}</option>`); }</script>
+      </select>
+      <select id="difficulty-select" class="form-input bg-white">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Start Game</button>
+    </form>
+    <footer class="mt-8 text-center text-gray-500">
+      <p>Made with ❤️ for ZPPS Umbadga bk By Om Karkele</p>
+      <button id="about-btn" class="text-violet-500 hover:text-violet-700 font-semibold mt-2">About this Game</button>
+    </footer>
+  </div>
+
+  <!-- Game Container -->
+  <div id="game-container" class="hidden w-full max-w-4xl mx-auto flex-col items-center">
+    <div class="game-header">
+      <h2 id="welcome-message" class="text-xl font-semibold text-violet-700"></h2>
+      <div class="game-stats">
+        <div id="score" class="info-box">Score: 0</div>
+        <div id="level-tracker" class="info-box">Puzzle: 1 / 11</div>
+        <div id="timer" class="info-box text-red-500">Time: 50</div>
+      </div>
+    </div>
+
+    <div id="crossword-layout" class="w-full flex flex-col md:grid md:grid-cols-[1fr_auto] justify-center items-start gap-6 mb-4">
+        <div id="puzzle-container"></div>
+        <div id="clues-container" class="hidden"></div>
+    </div>
+
+    <h3 id="category-display" class="text-2xl font-bold text-violet-600 mb-4 category-text"></h3>
+    <div id="letters-container" class="letters-box"></div>
+
+    <div id="controls" class="flex items-center gap-4">
+      <button id="hint-btn" class="btn btn-icon bg-amber-400 hover:bg-amber-500">💡</button>
+      <button id="music-toggle" class="btn btn-icon bg-rose-400 hover:bg-rose-500">🔇</button>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div id="modal" class="modal-container hidden">
+    <div class="modal-content">
+      <h2 id="modal-title"></h2>
+      <p id="modal-message"></p><button id="next-word-btn" class="btn btn-success w-full">Next</button>
+    </div>
+  </div>
+  <div id="hint-modal" class="modal-container hidden">
+    <div class="modal-content">
+      <h3 class="modal-header">Use a Hint?</h3>
+      <p class="modal-text">Choose the type of hint you want.</p>
+      <div class="flex flex-col gap-3"><button id="confirm-picture-hint-btn"
+          class="btn bg-sky-500 hover:bg-sky-600">Show Picture (-5 Points)</button><button id="confirm-letter-hint-btn"
+          class="btn bg-orange-500 hover:bg-orange-600">Show Letter (-10 Points)</button><button id="cancel-hint-btn"
+          class="btn-cancel">Cancel</button></div>
+    </div>
+  </div>
+  <div id="picture-hint-modal" class="modal-container hidden">
+    <div class="modal-content p-4"><img id="picture-hint-img" class="rounded-lg mb-3" alt="Hint Image"><button
+        id="close-picture-hint-btn" class="btn btn-danger w-full">Close</button></div>
+  </div>
+
+  <div id="about-modal" class="modal-container hidden">
+    <div class="modal-content text-left">
+      <h2 class="modal-header">About This Game</h2>
+        <div class="modal-text space-y-4 leading-relaxed">
+            <p><strong>Project:</strong> This game is developed by Om Karkele at the kind request of Ashwini Malbhage Ma'am for the students of ZPPS Umbadga (Bk).</p>
+            <p><strong>Purpose:</strong> The game aims to make English vocabulary learning more interactive and enjoyable </p>
+            <p><strong>Contact:</strong> For any queries, suggestions, or feedback, please reach out at: <a href="mailto:omavkarkele@gmail.com" class="text-blue-600 underline hover:text-blue-800">omavkarkele@gmail.com</a></p>
+            <p><strong>Credits:</strong> Hint images are sourced from the Pexels API, while all background music and sound effects are obtained from platforms such as Pixabay and Suno. All other design and code are the original work of Om Karkele.</p>
+            <p class="text-center text-gray-600 font-medium">&copy; 2025 Om Karkele. All Rights Reserved.</p>
+        </div>
+      <button id="close-about-btn" class="btn btn-primary w-full mt-6">Close</button>
+    </div>
+  </div>
+  
+  <div id="game-over-modal" class="modal-container hidden">
+      <div class="modal-content">
+          <h2 class="modal-header">Better Luck Next Time!</h2>
+          <p class="modal-text">You can try again to get a positive score and earn a certificate.</p>
+          <button id="play-again-btn-gameover" class="btn btn-primary w-full">Play Again</button>
+      </div>
+  </div>
+
+  <div id="certificate-modal" class="modal-container hidden">
+    <div class="certificate-content">
+      <h2 class="cert-title">Well Done!</h2>
+      <p class="cert-text">A Certificate of Achievement for</p>
+      <h3 id="final-player-name" class="cert-name"></h3>
+      <p id="final-school-name" class="cert-school"></p>
+      <p class="cert-text">You scored an amazing</p>
+      <!-- UPDATED: Score container for total marks -->
+      <div class="cert-score-container">
+          <p id="final-score" class="cert-score"></p>
+          <p id="total-possible-score" class="cert-total-score"></p>
+      </div>
+      <div class="flex gap-4 justify-center"><button id="share-btn"
+          class="btn bg-blue-500 hover:bg-blue-600">Share</button><button id="play-again-btn"
+          class="btn btn-success">Play Again</button></div>
+      <div class="cert-signature-block">
+        <p class="cert-signature">Ashwini Malbhage</p>
+        <p class="cert-signature-title">ZPPS Umbadga bk</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio & Canvas -->
+  <audio id="bg-music" loop src="music.mp3"></audio>
+  <audio id="correct-sound" src="correct.mp3"></audio>
+  <audio id="cheer-sound" src="cheer.mp3"></audio>
+  <canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
+

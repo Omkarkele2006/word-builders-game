@@ -1,0 +1,243 @@
+/* --- Base Styles & Fonts --- */
+body {
+    font-family: 'Fredoka', sans-serif;
+    touch-action: none;
+    background: #f0f4ff; /* Light, clean background */
+}
+
+/* --- Text & Title Styles (UPDATED) --- */
+.title-text {
+    background: linear-gradient(45deg, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    background-clip: text; /* Standard property */
+    -webkit-text-fill-color: transparent;
+}
+.category-text {
+    background: linear-gradient(45deg, #6366f1, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text; /* Standard property */
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- Form & Input Styles --- */
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    text-align: center;
+    border: 2px solid #ddd6fe;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease-in-out;
+}
+.form-input:focus {
+    outline: none;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.3);
+}
+
+/* --- Buttons --- */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0,0,0,0.1);
+}
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.btn-primary { background-color: #8b5cf6; } .btn-primary:hover { background-color: #7c3aed; }
+.btn-success { background-color: #22c55e; } .btn-success:hover { background-color: #16a34a; }
+.btn-danger { background-color: #ef4444; } .btn-danger:hover { background-color: #dc2626; }
+.btn-icon {
+    width: 4rem; height: 4rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.25rem;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+.btn-cancel {
+    margin-top: 0.5rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+.btn-cancel:hover { color: #1f2937; }
+
+
+/* --- Game Layout & Components --- */
+.game-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+.info-box {
+    background-color: #f3f4f6;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    color: #4b5563;
+}
+.letters-box {
+    min-height: 80px;
+    width: 100%;
+    max-width: 32rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+/* --- Letter Tiles & Puzzle Slots --- */
+.letter-box, .puzzle-slot {
+    width: 48px; height: 48px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.75rem; font-weight: 600;
+    border-radius: 0.75rem;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+@media (max-width: 600px) {
+    .letter-box, .puzzle-slot { width: 40px; height: 40px; font-size: 1.25rem; border-radius: 0.5rem; }
+}
+
+.letter-box {
+    cursor: grab;
+    background-color: white;
+    color: #4f46e5;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.letter-box:active { cursor: grabbing; transform: scale(1.1); box-shadow: 0 8px 12px rgba(0,0,0,0.15); }
+
+.puzzle-slot {
+    background-color: #eef2ff;
+    border: 2px dashed #c7d2fe;
+    color: #312e81;
+}
+.puzzle-slot.hint, .puzzle-slot.filled {
+    background-color: #dcfce7;
+    border-style: solid;
+    border-color: #86efac;
+    color: #15803d;
+}
+.drag-over {
+    transform: scale(1.1);
+    background-color: #fef9c3;
+    border-color: #facc15;
+}
+
+/* --- Modals --- */
+.modal-container { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 1; transition: opacity 0.3s ease; z-index: 100; backdrop-filter: blur(4px); }
+.modal-container.hidden { opacity: 0; pointer-events: none; }
+.modal-content { 
+    background: white; 
+    padding: 2rem; 
+    border-radius: 1.5rem; 
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
+    width: 100%; 
+    max-width: 28rem; 
+    text-align: center; 
+    transform: scale(1); 
+    transition: transform 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.modal-container.hidden .modal-content { transform: scale(0.95); }
+.modal-header { font-size: 1.75rem; font-weight: 600; margin-bottom: 1rem; color: #4338ca; }
+.modal-text { color: #4b5563; margin-bottom: 1.5rem; }
+
+/* --- Certificate --- */
+.certificate-content { background-image: radial-gradient(#ffffff 70%, #fffbeb); border: 10px solid #fde68a; padding: 2rem; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 32rem; text-align: center; color: #374151; position: relative; }
+.certificate-content::before { content: '🏆'; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); font-size: 5rem; line-height: 1; }
+.cert-title { font-size: 2.5rem; font-weight: 600; color: #1d4ed8; margin-top: 2rem; margin-bottom: 0.5rem; }
+.cert-text { margin-bottom: 1rem; }
+.cert-name { font-size: 2.25rem; font-weight: 600; color: #7e22ce; margin-bottom: 0.5rem; }
+.cert-school { font-style: italic; margin-bottom: 1rem; }
+.cert-score { font-size: 4rem; font-weight: 600; color: #16a34a; }
+.cert-signature-block { margin-top: 2rem; text-align: right; }
+.cert-signature { font-family: 'Fredoka', cursive; font-style: italic; font-weight: 500; font-size: 1.25rem; }
+.cert-signature-title { border-top: 1px solid #9ca3af; padding-top: 0.25rem; }
+
+/* NEW: Styles for the total score display */
+.cert-score-container {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+.cert-total-score {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #6b7280;
+}
+.cert-total-score::before {
+    content: "/ ";
+}
+
+/* --- Crossword --- */
+.game-grid { display: grid; grid-template-columns: repeat(5, 48px); grid-template-rows: repeat(5, 48px); gap: 4px; }
+@media (max-width: 600px) {
+    .game-grid { grid-template-columns: repeat(5, 40px); grid-template-rows: repeat(5, 40px); }
+}
+.puzzle-slot.impassable { background-color: transparent; border: none; }
+
+#clues-container {
+    background: white; padding: 1rem; border-radius: 1rem; font-size: 1rem; font-weight: 500; color: #4b5563;
+    width: 220px; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+#clues-container h3 { font-size: 1.25rem; font-weight: 600; color: #5b21b6; margin-bottom: 0.5rem; text-align: center; border-bottom: 2px solid #ddd6fe; padding-bottom: 0.5rem; }
+#clues-container ul { list-style-type: none; padding: 0; margin-top: 0.5rem; }
+#clues-container li { padding: 0.25rem 0.5rem; }
+
+/* --- Animations --- */
+@keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+.shake { animation: shake 0.5s ease-in-out; }
+@keyframes flash-green { 50% { background-color: #4ade80; color: white; } }
+.flash-green { animation: flash-green 0.5s ease; }
+@keyframes flash-red { 50% { background-color: #f87171; color: white; } }
+.flash-red { animation: flash-red 0.5s ease; }
+
+/* --- Responsive styles for mobile --- */
+.game-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+    .game-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+    .info-box {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    .game-stats {
+        width: 100%;
+        justify-content: space-around;
+    }
+}
+
