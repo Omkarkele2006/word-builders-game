@@ -1,9 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- PEXELS API KEY ---
-    // PASTE YOUR FREE PEXELS API KEY HERE
     const PEXELS_API_KEY = 'KNBxKvPN6kXEhKUzawtXtoEl0TMZJHePCgsPd4CQR2RVX0RZHJQbLsah';
 
-    // --- DOM Elements ---
     const hintModal = document.getElementById('hint-modal'),
           confirmLetterHintBtn = document.getElementById('confirm-letter-hint-btn'),
           confirmPictureHintBtn = document.getElementById('confirm-picture-hint-btn'),
@@ -22,8 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const correctSound = document.getElementById('correct-sound'),
           cheerSound = document.getElementById('cheer-sound');
-
-    // --- Game Data (Your final version) ---
     const wordData = {
         easy: {
           Words: [
@@ -78,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ],
             hints: { '0-2': 'E' }
           },
-          "Transport Crossword": { // CORRECTED
+          "Transport Crossword": {
             gridSize: { rows: 5, cols: 5 },
             words: [
               { word: "TRUCK", img: "toy truck", start: { row: 0, col: 2 }, dir: "v" },
@@ -87,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ],
             hints: { '1-2': 'R' }
           },
-          "Flower Crossword": { // CORRECTED
+          "Flower Crossword": {
             gridSize: { rows: 5, cols: 5 },
             words: [
               { word: "ROSE", img: "pink rose", start: { row: 1, col: 0 }, dir: "h" },
@@ -108,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Game State ---
     let playerData = {}, currentLevelData = {}, gridSolution = null;
     let score = 0, initialTime = 0, timeLeft = 0, totalPossibleScore = 0;
     let timerInterval, draggedElement = null, isMusicOn = false, hasInteracted = false;
@@ -116,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let usedWordKeys = new Set();
     const myConfetti = confetti.create(confettiCanvas, { resize: true, useWorker: true });
 
-    // --- Event Listeners & Setup ---
     function setupEventListeners() {
         playerForm.addEventListener('submit', startGame);
         hintBtn.addEventListener('click', openHintModal);
@@ -148,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
     playMusic();
     setupEventListeners();
 
-    // --- Drag & Drop ---
     function handleDragStart(e) { draggedElement = e.target; setTimeout(() => e.target.classList.add('opacity-50'), 0); };
     function handleDragEnd() { if (draggedElement) draggedElement.classList.remove('opacity-50'); draggedElement = null; };
     function handleDragOver(e) { e.preventDefault(); const t = e.target.closest('.puzzle-slot'); if (t && !t.firstElementChild) t.classList.add('drag-over'); };
@@ -156,8 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleDrop(e) { e.preventDefault(); const target = e.target.closest('.puzzle-slot'); if (target) { target.classList.remove('drag-over'); if (target && !target.firstElementChild) { target.appendChild(draggedElement); correctSound.currentTime = 0; correctSound.play(); checkCompletion(); } } };
     lettersContainer.addEventListener('dragover', e => e.preventDefault());
     lettersContainer.addEventListener('drop', e => { e.preventDefault(); if (draggedElement) lettersContainer.appendChild(draggedElement); });
-
-    // --- Game Flow ---
     function startGame(e) {
         e.preventDefault();
         puzzlesCompleted = 0;
@@ -302,8 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         Object.entries(lettersToPlace).flatMap(([letter, count]) => Array(count).fill(letter)).sort(() => Math.random() - 0.5).forEach(letter => createLetterTile(letter));
     }
-
-    // --- Hint System ---
     function openHintModal() {
         if (playerData.difficulty === 'hard') {
             confirmPictureHintBtn.style.display = 'none';
@@ -373,8 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
             pictureHintImg.src = notFoundUrl;
         }
     }
-
-    // --- Core Game Logic ---
     function showModal(isSuccess, message) {
         modal.classList.remove('hidden');
         modalTitle.textContent = isSuccess ? 'Awesome!' : 'Oops!';
@@ -397,40 +383,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // UPDATED: This function now correctly checks all three directions (h, v, and vu)
     function checkCrosswordSolution() {
         return currentLevelData.words.every(({ word, start, dir }) => {
             let constructedWord = '';
             for (let i = 0; i < word.length; i++) {
                 let r, c;
-                if (dir === 'h') {         // Horizontal
+                if (dir === 'h') {
                     r = start.row;
                     c = start.col + i;
-                } else if (dir === 'v') {  // Vertical Down
+                } else if (dir === 'v') {
                     r = start.row + i;
                     c = start.col;
-                } else if (dir === 'vu') { // Vertical Up
+                } else if (dir === 'vu') {
                     r = start.row - i;
                     c = start.col;
                 }
                 
                 const slot = puzzleContainer.querySelector(`[data-row='${r}'][data-col='${c}']`);
-                if (!slot) return false; // Safety check in case of bad data
+                // Safety check in case of bad data
+                if (!slot) return false;
                 constructedWord += slot.firstElementChild ? slot.firstElementChild.textContent : slot.textContent;
             }
             return constructedWord === word;
         });
     }
 
-    // --- Utility Functions ---
     function startTimer() { clearInterval(timerInterval); timerInterval = setInterval(() => { timeLeft--; timerDisplay.textContent = `Time: ${timeLeft}`; if (timeLeft <= 0) { clearInterval(timerInterval); endGame(); } }, 1000); }
     function updateScore(points) { if (points !== 0) score += points; scoreDisplay.textContent = `Score: ${score}`; if (points !== 0) { const flashClass = points > 0 ? 'flash-green' : 'flash-red'; scoreDisplay.classList.add(flashClass); setTimeout(() => scoreDisplay.classList.remove(flashClass), 500); } }
     function toggleMusic() { isMusicOn = !isMusicOn; if (isMusicOn) { bgMusic.play(); musicToggle.textContent = '🔊'; } else { bgMusic.pause(); musicToggle.textContent = '🔇'; } }
     function createLetterTile(letter) { const tile = document.createElement('div'); tile.className = 'letter-box'; tile.textContent = letter; tile.draggable = true; tile.addEventListener('dragstart', handleDragStart); tile.addEventListener('dragend', handleDragEnd); lettersContainer.appendChild(tile); }
     function maskWord(word) { return word.length <= 2 ? word : `${word[0]}${' _ '.repeat(word.length - 2)}${word[word.length - 1]}`; }
     function toTitleCase(str) { return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()); }
-
-    // --- End Game & Sharing ---
     function endGame() {
         clearInterval(timerInterval);
         gameContainer.classList.add('hidden');
@@ -439,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
             finalPlayerName.textContent = toTitleCase(playerData.name);
             finalSchoolName.textContent = playerData.school;
             finalScore.textContent = score;
-            totalPossibleScoreDisplay.textContent = totalPossibleScore; // NEW: Display total score
+            totalPossibleScoreDisplay.textContent = totalPossibleScore;
             certificateModal.classList.remove('hidden');
             cheerSound.play();
         } else {
