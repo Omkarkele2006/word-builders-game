@@ -2,104 +2,110 @@ document.addEventListener('DOMContentLoaded', () => {
     const PEXELS_API_KEY = 'KNBxKvPN6kXEhKUzawtXtoEl0TMZJHePCgsPd4CQR2RVX0RZHJQbLsah';
 
     const hintModal = document.getElementById('hint-modal'),
-          confirmLetterHintBtn = document.getElementById('confirm-letter-hint-btn'),
-          confirmPictureHintBtn = document.getElementById('confirm-picture-hint-btn'),
-          cancelHintBtn = document.getElementById('cancel-hint-btn'),
-          levelTracker = document.getElementById('level-tracker'),
-          pictureHintModal = document.getElementById('picture-hint-modal'),
-          closePictureHintBtn = document.getElementById('close-picture-hint-btn'),
-          pictureHintImg = document.getElementById('picture-hint-img'),
-          aboutModal = document.getElementById('about-modal'),
-          aboutBtn = document.getElementById('about-btn'),
-          closeAboutBtn = document.getElementById('close-about-btn');
+        confirmLetterHintBtn = document.getElementById('confirm-letter-hint-btn'),
+        confirmPictureHintBtn = document.getElementById('confirm-picture-hint-btn'),
+        cancelHintBtn = document.getElementById('cancel-hint-btn'),
+        levelTracker = document.getElementById('level-tracker'),
+        pictureHintModal = document.getElementById('picture-hint-modal'),
+        closePictureHintBtn = document.getElementById('close-picture-hint-btn'),
+        pictureHintImg = document.getElementById('picture-hint-img'),
+        aboutModal = document.getElementById('about-modal'),
+        aboutBtn = document.getElementById('about-btn'),
+        closeAboutBtn = document.getElementById('close-about-btn');
     const splashScreen = document.getElementById('splash-screen'), playerForm = document.getElementById('player-form'), difficultySelect = document.getElementById('difficulty-select'), gameContainer = document.getElementById('game-container'), welcomeMessage = document.getElementById('welcome-message'), musicToggle = document.getElementById('music-toggle'), puzzleContainer = document.getElementById('puzzle-container'), cluesContainer = document.getElementById('clues-container'), lettersContainer = document.getElementById('letters-container'), hintBtn = document.getElementById('hint-btn'), categoryDisplay = document.getElementById('category-display'), scoreDisplay = document.getElementById('score'), timerDisplay = document.getElementById('timer'), modal = document.getElementById('modal'), modalTitle = document.getElementById('modal-title'), modalMessage = document.getElementById('modal-message'), nextWordBtn = document.getElementById('next-word-btn'), certificateModal = document.getElementById('certificate-modal'), finalPlayerName = document.getElementById('final-player-name'), finalSchoolName = document.getElementById('final-school-name'), finalScore = document.getElementById('final-score'), shareBtn = document.getElementById('share-btn'), playAgainBtn = document.getElementById('play-again-btn'), confettiCanvas = document.getElementById('confetti-canvas'), bgMusic = document.getElementById('bg-music');
     const gameOverModal = document.getElementById('game-over-modal');
     const playAgainBtnGameOver = document.getElementById('play-again-btn-gameover');
     const totalPossibleScoreDisplay = document.getElementById('total-possible-score');
 
     const correctSound = document.getElementById('correct-sound'),
-          cheerSound = document.getElementById('cheer-sound');
+        cheerSound = document.getElementById('cheer-sound');
     const wordData = {
         easy: {
-          Words: [
-            { word: "CAT", img: "cute cat" }, { word: "COW", img: "cow" }, { word: "DOG", img: "happy dog" },
-            { word: "ROSE", img: "red rose" }, { word: "GIRL", img: "girl" }, { word: "MOON", img: "full moon" },
-            { word: "SUN", img: "sun" }, { word: "PEN", img: "pen on white background" }, { word: "CAR", img: "red car" },
-            { word: "BUS", img: "school bus" }, { word: "SHIP", img: "ship at sea" }
-          ]
+            Words: [
+                { word: "CAT", img: "cute cat" }, { word: "COW", img: "cow" }, { word: "DOG", img: "happy dog" },
+                { word: "ROSE", img: "red rose" }, { word: "GIRL", img: "girl" }, { word: "MOON", img: "full moon" },
+                { word: "SUN", img: "sun" }, { word: "PEN", img: "pen on white background" }, { word: "CAR", img: "red car" },
+                { word: "BUS", img: "school bus" }, { word: "SHIP", img: "ship at sea" }
+            ]
         },
         medium: {
-          Words: [
-            { word: "LOTUS", img: "lotus" }, { word: "MANGO", img: "ripe mango" }, { word: "PHONE", img: "smartphone" },
-            { word: "TRUCK", img: "truck" }, { word: "SCHOOL", img: "school building" }, { word: "PENCIL", img: "pencil" },
-            { word: "BOARD", img: "chalkboard" }, { word: "WINDOW", img: "house window" }, { word: "GREEN", img: "green leaf" },
-            { word: "CLOCK", img: "wall clock" }, { word: "EIGHT", img: "number eight" }
-          ]
+            Words: [
+                { word: "LOTUS", img: "lotus" }, { word: "MANGO", img: "ripe mango" }, { word: "PHONE", img: "smartphone" },
+                { word: "TRUCK", img: "truck" }, { word: "SCHOOL", img: "school building" }, { word: "PENCIL", img: "pencil" },
+                { word: "BOARD", img: "chalkboard" }, { word: "WINDOW", img: "house window" }, { word: "GREEN", img: "green leaf" },
+                { word: "CLOCK", img: "wall clock" }, { word: "EIGHT", img: "number eight" }
+            ]
         },
         hard: {
-          "Animal Crossword": {
-            gridSize: { rows: 5, cols: 5 },
-            words: [
-              { word: "TIGER", img: "tiger", start: { row: 0, col: 0 }, dir: "h" },
-              { word: "GOAT", img: "goat", start: { row: 0, col: 2 }, dir: "v" },
-              { word: "DOG", img: "golden retriever", start: { row: 1, col: 1 }, dir: "h" }
-            ],
-            hints: { '0-2': 'G' }
-          },
-          "Fruit Crossword": {
-            gridSize: { rows: 5, cols: 5 },
-            words: [
-              { word: "MANGO", img: "mango slice", start: { row: 0, col: 0 }, dir: "v" },
-              { word: "GRAPE", img: "green grape", start: { row: 3, col: 0 }, dir: "h" },
-              { word: "PEAR", img: "green pear", start: { row: 3, col: 3 }, dir: "vu" }
-            ],
-            hints: { '3-0': 'G' }
-          },
-          "Bird Crossword": {
-            gridSize: { rows: 5, cols: 5 },
-            words: [
-              { word: "CROW", img: "crow bird", start: { row: 2, col: 1 }, dir: "h" },
-              { word: "OWL", img: "owl", start: { row: 2, col: 3 }, dir: "vu" },
-              { word: "EAGLE", img: "eagle flying", start: { row: 0, col: 0 }, dir: "h" }
-            ],
-            hints: { '1-3': 'W' }
-          },
-          "Color Crossword": {
-            gridSize: { rows: 5, cols: 5 },
-            words: [
-              { word: "RED", img: "red color", start: { row: 0, col: 1 }, dir: "v" },
-              { word: "GREEN", img: "green color", start: { row: 0, col: 0 }, dir: "h" },
-              { word: "BLUE", img: "blue color", start: { row: 3, col: 2 }, dir: "vu" }
-            ],
-            hints: { '0-2': 'E' }
-          },
-          "Transport Crossword": {
-            gridSize: { rows: 5, cols: 5 },
-            words: [
-              { word: "TRUCK", img: "toy truck", start: { row: 0, col: 2 }, dir: "v" },
-              { word: "BUS", img: "city bus", start: { row: 2, col: 1 }, dir: "h" },
-              { word: "CAR", img: "sports car", start: { row: 1, col: 0 }, dir: "h" }
-            ],
-            hints: { '1-2': 'R' }
-          },
-          "Flower Crossword": {
-            gridSize: { rows: 5, cols: 5 },
-            words: [
-              { word: "ROSE", img: "pink rose", start: { row: 1, col: 0 }, dir: "h" },
-              { word: "LOTUS", img: "lotus flower", start: { row: 0, col: 1 }, dir: "v" },
-              { word: "LILY", img: "white lily", start: { row: 0, col: 1 }, dir: "h" }
-            ],
-            hints: { '1-1': 'O' }
-          },
-          "Object Crossword": { // CORRECTED
-            gridSize: { rows: 5, cols: 5 },
-            words: [
-              { word: "BOOK", img: "old book", start: { row: 1, col: 1 }, dir: "v" },
-              { word: "POT", img: "cooking pot", start: { row: 3, col: 0 }, dir: "h" },
-              { word: "LAMP", img: "desk lamp", start: { row: 0, col: 0 }, dir: "v" }
-            ],
-            hints: { '3-1': 'O' }
-          }
+            "Animal Crossword": {
+                gridSize: { rows: 5, cols: 5 },
+                words: [
+                    { word: "TIGER", img: "tiger", start: { row: 0, col: 0 }, dir: "h", clue: "National animal of India" },
+                    { word: "GOAT", img: "goat", start: { row: 0, col: 2 }, dir: "v", clue: "A farm animal that gives milk" },
+                    { word: "DOG", img: "golden retriever", start: { row: 1, col: 1 }, dir: "h", clue: "A loyal pet that barks" }
+                ],
+                hints: { '0-2': 'G' }
+            },
+
+            "Fruit Crossword": {
+                gridSize: { rows: 5, cols: 5 },
+                words: [
+                    { word: "MANGO", img: "mango slice", start: { row: 0, col: 0 }, dir: "v", clue: "National fruit of India" },
+                    { word: "GRAPE", img: "green grape", start: { row: 3, col: 0 }, dir: "h", clue: "Small fruits that grow in bunches" },
+                    { word: "PEAR", img: "green pear", start: { row: 3, col: 3 }, dir: "vu", clue: "A sweet green fruit" }
+                ],
+                hints: { '3-0': 'G' }
+            },
+
+            "Bird Crossword": {
+                gridSize: { rows: 5, cols: 5 },
+                words: [
+                    { word: "CROW", img: "crow bird", start: { row: 2, col: 1 }, dir: "h", clue: "A black bird that says caw caw" },
+                    { word: "OWL", img: "owl", start: { row: 2, col: 3 }, dir: "vu", clue: "A bird that stays awake at night" },
+                    { word: "EAGLE", img: "eagle flying", start: { row: 0, col: 0 }, dir: "h", clue: "A strong bird with sharp eyesight" }
+                ],
+                hints: { '1-3': 'W' }
+            },
+
+            "Color Crossword": {
+                gridSize: { rows: 5, cols: 5 },
+                words: [
+                    { word: "RED", img: "red color", start: { row: 0, col: 1 }, dir: "v", clue: "Color of a rose" },
+                    { word: "GREEN", img: "green color", start: { row: 0, col: 0 }, dir: "h", clue: "Color of grass" },
+                    { word: "BLUE", img: "blue color", start: { row: 3, col: 2 }, dir: "vu", clue: "Color of the sky" }
+                ],
+                hints: { '0-2': 'E' }
+            },
+
+            "Transport Crossword": {
+                gridSize: { rows: 5, cols: 5 },
+                words: [
+                    { word: "TRUCK", img: "toy truck", start: { row: 0, col: 2 }, dir: "v", clue: "Used to carry heavy goods" },
+                    { word: "BUS", img: "city bus", start: { row: 2, col: 1 }, dir: "h", clue: "Many students travel to school in this" },
+                    { word: "CAR", img: "sports car", start: { row: 1, col: 0 }, dir: "h", clue: "A common family vehicle" }
+                ],
+                hints: { '1-2': 'R' }
+            },
+
+            "Flower Crossword": {
+                gridSize: { rows: 5, cols: 5 },
+                words: [
+                    { word: "ROSE", img: "pink rose", start: { row: 1, col: 0 }, dir: "h", clue: "A flower often given on special days" },
+                    { word: "LOTUS", img: "lotus flower", start: { row: 0, col: 1 }, dir: "v", clue: "National flower of India" },
+                    { word: "LILY", img: "white lily", start: { row: 0, col: 1 }, dir: "h", clue: "A beautiful garden flower" }
+                ],
+                hints: { '1-1': 'O' }
+            },
+
+            "Object Crossword": {
+                gridSize: { rows: 5, cols: 5 },
+                words: [
+                    { word: "BOOK", img: "old book", start: { row: 1, col: 1 }, dir: "v", clue: "Something you read" },
+                    { word: "POT", img: "cooking pot", start: { row: 3, col: 0 }, dir: "h", clue: "Used for cooking food" },
+                    { word: "LAMP", img: "desk lamp", start: { row: 0, col: 0 }, dir: "v", clue: "Gives light in a room" }
+                ],
+                hints: { '3-1': 'O' }
+            }
         }
     };
 
@@ -126,15 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
         closeAboutBtn.addEventListener('click', () => aboutModal.classList.add('hidden'));
         document.body.addEventListener('click', initialUserInteraction, { once: true });
     }
-    
+
     function initialUserInteraction() {
         hasInteracted = true;
         if (!isMusicOn) playMusic();
     }
-    
+
     function playMusic() {
         if (hasInteracted) {
-            try { bgMusic.play(); isMusicOn = true; } catch (err) {}
+            try { bgMusic.play(); isMusicOn = true; } catch (err) { }
         }
     }
     playMusic();
@@ -161,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             totalPuzzlesInGame = Object.keys(wordData[playerData.difficulty]).reduce((sum, category) => sum + wordData[playerData.difficulty][category].length, 0);
         }
-        
+
         totalPossibleScore = totalPuzzlesInGame * 25;
 
         switch (playerData.difficulty) {
@@ -256,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clueHeader = document.createElement('h3');
         clueHeader.textContent = "Clues";
         cluesContainer.appendChild(clueHeader);
-        words.forEach(({ word }, index) => { const li = document.createElement('li'); li.textContent = `${index + 1}. ${maskWord(word)}`; clueList.appendChild(li); });
+        words.forEach(({ word, clue }, index) => { const li = document.createElement('li'); li.textContent = `${index + 1}. ${clue} [${word.length}]`; clueList.appendChild(li); });
         cluesContainer.appendChild(clueList);
 
         const addedCoordinates = new Set();
@@ -340,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function usePictureHint() {
         hintModal.classList.add('hidden');
         if (score <= -50) { alert("You have reached the minimum score limit!"); return; }
-        
+
         const success = await fetchAndShowPicture();
         if (success) {
             updateScore(-5);
@@ -396,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => puzzleContainer.classList.remove('shake'), 500);
         }
     }
-    
+
     function checkCrosswordSolution() {
         return currentLevelData.words.every(({ word, start, dir }) => {
             let constructedWord = '';
@@ -412,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     r = start.row - i;
                     c = start.col;
                 }
-                
+
                 const slot = puzzleContainer.querySelector(`[data-row='${r}'][data-col='${c}']`);
                 // Safety check in case of bad data
                 if (!slot) return false;
@@ -443,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gameOverModal.classList.remove('hidden');
         }
     }
-    
+
     async function shareScore() {
         const element = certificateModal.querySelector('.certificate-content');
         if (!element) return;
@@ -453,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'certificate.png', { type: 'image/png' })] })) {
                     const file = new File([blob], 'certificate.png', { type: 'image/png' });
                     await navigator.share({
-                        title: 'My Word Builders Score!',   
+                        title: 'My Word Builders Score!',
                         text: `I scored ${score} in the Word Builders Game! Check out my certificate. Created by @OmKarkele`,
                         files: [file]
                     });

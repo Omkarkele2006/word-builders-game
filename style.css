@@ -203,12 +203,13 @@ body {
 .puzzle-slot.impassable { background-color: transparent; border: none; }
 
 #clues-container {
-    background: white; padding: 1rem; border-radius: 1rem; font-size: 1rem; font-weight: 500; color: #4b5563;
-    width: 220px; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    background: white; padding: 1rem; border-radius: 1rem; font-size: 0.95rem; font-weight: 500; color: #4b5563;
+    width: 280px; max-width: 100%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 #clues-container h3 { font-size: 1.25rem; font-weight: 600; color: #5b21b6; margin-bottom: 0.5rem; text-align: center; border-bottom: 2px solid #ddd6fe; padding-bottom: 0.5rem; }
 #clues-container ul { list-style-type: none; padding: 0; margin-top: 0.5rem; }
-#clues-container li { padding: 0.25rem 0.5rem; }
+#clues-container li { padding: 0.4rem 0.5rem; line-height: 1.4; border-bottom: 1px dashed #f3f4f6; }
+#clues-container li:last-child { border-bottom: none; }
 
 /* Keyframe Animations */
 @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
