@@ -304,13 +304,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function useLetterHint() {
         hintModal.classList.add('hidden');
-        if (score <= -50) { alert("You have reached the minimum score limit!"); return; }
-
-        const pointsToDeduct = playerData.difficulty === 'hard' ? -15 : -10;
-        updateScore(pointsToDeduct);
-
         const emptySlots = [...puzzleContainer.querySelectorAll('.puzzle-slot:not(.impassable):not(.hint)')].filter(s => !s.firstElementChild);
         if (emptySlots.length === 0) return;
+
+        if (score <= -50) { alert("You have reached the minimum score limit!"); return; }
 
         let targetSlot, correctLetter;
         if (playerData.difficulty === 'hard') {
@@ -324,6 +321,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const letterTile = [...document.querySelectorAll('.letter-box')].find(tile => tile.textContent === correctLetter && tile.parentElement !== targetSlot);
         if (letterTile) {
+            const pointsToDeduct = playerData.difficulty === 'hard' ? -15 : -10;
+            updateScore(pointsToDeduct);
+
             targetSlot.appendChild(letterTile);
             targetSlot.classList.add('hint', 'filled');
             targetSlot.removeEventListener('dragover', handleDragOver);
@@ -334,11 +334,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function usePictureHint() {
+    async function usePictureHint() {
         hintModal.classList.add('hidden');
         if (score <= -50) { alert("You have reached the minimum score limit!"); return; }
-        updateScore(-5);
-        fetchAndShowPicture();
+        
+        const success = await fetchAndShowPicture();
+        if (success) {
+            updateScore(-5);
+        } else {
+            alert("Could not load image hint. No points deducted.");
+        }
     }
 
     async function fetchAndShowPicture() {
@@ -349,15 +354,22 @@ document.addEventListener('DOMContentLoaded', () => {
         pictureHintImg.src = loadingUrl;
         if (!PEXELS_API_KEY || PEXELS_API_KEY === 'YOUR_PEXELS_API_KEY_GOES_HERE') {
             pictureHintImg.src = notFoundUrl;
-            return;
+            return false;
         }
         try {
             const response = await fetch(`https://api.pexels.com/v1/search?query=${imageKeyword}&per_page=1`, { headers: { Authorization: PEXELS_API_KEY } });
             if (!response.ok) throw new Error('Pexels API failed');
             const data = await response.json();
-            pictureHintImg.src = (data.photos && data.photos.length > 0) ? data.photos[0].src.medium : notFoundUrl;
+            if (data.photos && data.photos.length > 0) {
+                pictureHintImg.src = data.photos[0].src.medium;
+                return true;
+            } else {
+                pictureHintImg.src = notFoundUrl;
+                return false;
+            }
         } catch (error) {
             pictureHintImg.src = notFoundUrl;
+            return false;
         }
     }
     function showModal(isSuccess, message) {
