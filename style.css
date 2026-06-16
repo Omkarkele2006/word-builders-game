@@ -1,7 +1,6 @@
 /* Base Styles */
 body {
     font-family: 'Fredoka', sans-serif;
-    touch-action: none;
     background: #f0f4ff; /* Light, clean background */
 }
 
@@ -116,9 +115,10 @@ body {
     border-radius: 0.75rem;
     user-select: none;
     transition: all 0.2s ease;
+    touch-action: none;
 }
 @media (max-width: 600px) {
-    .letter-box, .puzzle-slot { width: 40px; height: 40px; font-size: 1.25rem; border-radius: 0.5rem; }
+    .letter-box, .puzzle-slot { width: 44px; height: 44px; font-size: 1.25rem; border-radius: 0.5rem; }
 }
 
 .letter-box {
@@ -198,7 +198,7 @@ body {
 /* Crossword Board */
 .game-grid { display: grid; grid-template-columns: repeat(5, 48px); grid-template-rows: repeat(5, 48px); gap: 4px; }
 @media (max-width: 600px) {
-    .game-grid { grid-template-columns: repeat(5, 40px); grid-template-rows: repeat(5, 40px); }
+    .game-grid { grid-template-columns: repeat(5, 44px); grid-template-rows: repeat(5, 44px); }
 }
 .puzzle-slot.impassable { background-color: transparent; border: none; }
 
@@ -239,6 +239,25 @@ body {
     .game-stats {
         width: 100%;
         justify-content: space-around;
+    }
+    /* Responsive Certificate Typography & Styling */
+    .certificate-content {
+        padding: 1.5rem 1rem;
+        border-width: 6px;
+    }
+    .certificate-content::before {
+        font-size: 3.5rem;
+        top: -35px;
+    }
+    .cert-title {
+        font-size: 1.75rem;
+        margin-top: 1.5rem;
+    }
+    .cert-name {
+        font-size: 1.5rem;
+    }
+    .cert-score {
+        font-size: 2.75rem;
     }
 }
 

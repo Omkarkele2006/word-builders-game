@@ -1,21 +1,28 @@
 # Word Builders
 
-An educational vocabulary-building web application developed for the students of ZPPS Umbadga (Bk).
+An educational vocabulary-building web application created for the students of ZPPS Umbadga (Bk).
 
 ## About
 
-Word Builders was created to make English vocabulary learning more interactive and enjoyable through word puzzles, spelling activities, hints, and gamified challenges.
+Word Builders was developed to make English vocabulary learning more interactive and enjoyable through word puzzles, spelling activities, crossword challenges, hints, and gamified learning experiences.
 
-The project was developed at the request of Ashwini Malbhage Ma'am and has been shared with students of ZPPS Umbadga (Bk) for educational use.
+The project was created by **Om Karkele** at the request of **Ashwini Malbhage Ma'am** and has been shared with students of **ZPPS Umbadga (Bk)** for educational use.
+
+## Impact
+
+During the 2025 academic year, the application directly benefited nearly **100 students** at ZPPS Umbadga (Bk). The project has also been shared outside the school, allowing additional learners to explore vocabulary and language-building activities.
 
 ## Features
 
 * Vocabulary-based word puzzles
-* Multiple difficulty levels
+* Easy, Medium, and Hard difficulty levels
 * Crossword-style challenges
+* Educational word clues
+* Marathi vocabulary reinforcement
 * Image and letter hints
 * Audio feedback and celebrations
 * Achievement certificate generation
+* Mobile-friendly design
 
 ## Tech Stack
 
@@ -25,33 +32,30 @@ The project was developed at the request of Ashwini Malbhage Ma'am and has been 
 * Tailwind CSS
 * Pexels API
 
-## Purpose
+## Educational Goals
 
-The primary goal of this project is to help students improve:
+Word Builders helps students improve:
 
-* Vocabulary
+* English vocabulary
 * Spelling accuracy
 * Word recognition
+* Memory and recall
 * Problem-solving skills
 
-through a simple and engaging learning experience.
+through a simple, engaging, and classroom-friendly learning experience.
 
-## Future Improvements
+## Recognition
 
-Planned enhancements include:
-
-* Expanded vocabulary database
-* Better mobile experience
-* Marathi translations and learning support
-* Pronunciation assistance
-* Improved progress tracking
+The project has been shared with ZPPS Umbadga (Bk) and is actively used by students. A certificate/appreciation from the school will be added to this repository as part of the project documentation.
 
 ## Credits
 
 Developed by **Om Karkele**
 
-Special thanks to **ZPPS Umbadga (Bk)** for supporting the initiative.
+Special thanks to **ZPPS Umbadga (Bk)** for supporting this initiative.
 
-Hint images are sourced through the Pexels API. Background music and sound effects are sourced from Pixabay and Suno.
+Hint images are sourced using the Pexels API. Background music and sound effects are sourced from Pixabay and other royalty-free resources.
 
-For suggestions or feedback: [omavkarkele@gmail.com](mailto:omavkarkele@gmail.com)
+For suggestions or feedback:
+
+**[omavkarkele@gmail.com](mailto:omavkarkele@gmail.com)**

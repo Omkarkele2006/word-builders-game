@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalPossibleScoreDisplay = document.getElementById('total-possible-score');
 
     const correctSound = document.getElementById('correct-sound'),
-        cheerSound = document.getElementById('cheer-sound');
+        cheerSound = document.getElementById('cheer-sound'),
+        tapSound = document.getElementById('tap-sound'),
+        failSound = document.getElementById('fail-sound'),
+        sparkleSound = document.getElementById('sparkle-sound');
     const wordData = {
         easy: {
             Words: [
@@ -111,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let playerData = {}, currentLevelData = {}, gridSolution = null;
     let score = 0, initialTime = 0, timeLeft = 0, totalPossibleScore = 0;
-    let timerInterval, draggedElement = null, isMusicOn = false, hasInteracted = false;
+    let timerInterval, draggedElement = null, isMusicOn = false, hasInteracted = false, isAlertModal = false;
     let totalPuzzlesInGame = 0, puzzlesCompleted = 0;
     let usedWordKeys = new Set();
     const myConfetti = confetti.create(confettiCanvas, { resize: true, useWorker: true });
@@ -123,7 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmLetterHintBtn.addEventListener('click', useLetterHint);
         confirmPictureHintBtn.addEventListener('click', usePictureHint);
         musicToggle.addEventListener('click', toggleMusic);
-        nextWordBtn.addEventListener('click', generateLevel);
+        nextWordBtn.addEventListener('click', () => {
+            if (isAlertModal) {
+                modal.classList.add('hidden');
+            } else {
+                generateLevel();
+            }
+        });
         playAgainBtn.addEventListener('click', () => location.reload());
         playAgainBtnGameOver.addEventListener('click', () => location.reload());
         shareBtn.addEventListener('click', shareScore);
@@ -138,9 +147,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isMusicOn) playMusic();
     }
 
+    function playSound(sound) {
+        if (isMusicOn && sound) {
+            if (sound === bgMusic) {
+                sound.volume = 0.15;
+            } else if (sound === correctSound) {
+                sound.volume = 0.3;
+            } else if (sound === cheerSound) {
+                sound.volume = 0.3;
+            } else if (sound === tapSound) {
+                sound.volume = 0.2;
+            } else if (sound === failSound) {
+                sound.volume = 0.25;
+            } else if (sound === sparkleSound) {
+                sound.volume = 0.3;
+            }
+            sound.currentTime = 0;
+            sound.play().catch(err => {});
+        }
+    }
+
     function playMusic() {
         if (hasInteracted) {
-            try { bgMusic.play(); isMusicOn = true; } catch (err) { }
+            try {
+                bgMusic.volume = 0.15;
+                bgMusic.play();
+                isMusicOn = true;
+                musicToggle.textContent = '🔊';
+            } catch (err) { }
         }
     }
     playMusic();
@@ -150,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleDragEnd() { if (draggedElement) draggedElement.classList.remove('opacity-50'); draggedElement = null; };
     function handleDragOver(e) { e.preventDefault(); const t = e.target.closest('.puzzle-slot'); if (t && !t.firstElementChild) t.classList.add('drag-over'); };
     function handleDragLeave(e) { const t = e.target.closest('.puzzle-slot'); if (t) t.classList.remove('drag-over'); };
-    function handleDrop(e) { e.preventDefault(); const target = e.target.closest('.puzzle-slot'); if (target) { target.classList.remove('drag-over'); if (target && !target.firstElementChild) { target.appendChild(draggedElement); correctSound.currentTime = 0; correctSound.play(); checkCompletion(); } } };
+    function handleDrop(e) { e.preventDefault(); const target = e.target.closest('.puzzle-slot'); if (target) { target.classList.remove('drag-over'); if (target && !target.firstElementChild) { target.appendChild(draggedElement); playSound(tapSound); checkCompletion(); } } };
     lettersContainer.addEventListener('dragover', e => e.preventDefault());
     lettersContainer.addEventListener('drop', e => { e.preventDefault(); if (draggedElement) lettersContainer.appendChild(draggedElement); });
     function startGame(e) {
@@ -316,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const emptySlots = [...puzzleContainer.querySelectorAll('.puzzle-slot:not(.impassable):not(.hint)')].filter(s => !s.firstElementChild);
         if (emptySlots.length === 0) return;
 
-        if (score <= -50) { alert("You have reached the minimum score limit!"); return; }
+        if (score <= -50) { showModal(false, "You have reached the minimum score limit!", "Notice", true); return; }
 
         let targetSlot, correctLetter;
         if (playerData.difficulty === 'hard') {
@@ -338,20 +372,20 @@ document.addEventListener('DOMContentLoaded', () => {
             targetSlot.removeEventListener('dragover', handleDragOver);
             targetSlot.removeEventListener('dragleave', handleDragLeave);
             targetSlot.removeEventListener('drop', handleDrop);
-            correctSound.currentTime = 0; correctSound.play();
+            playSound(sparkleSound);
             checkCompletion();
         }
     }
 
     async function usePictureHint() {
         hintModal.classList.add('hidden');
-        if (score <= -50) { alert("You have reached the minimum score limit!"); return; }
+        if (score <= -50) { showModal(false, "You have reached the minimum score limit!", "Notice", true); return; }
 
         const success = await fetchAndShowPicture();
         if (success) {
             updateScore(-5);
         } else {
-            alert("Could not load image hint. No points deducted.");
+            showModal(false, "Could not load image hint. No points deducted.", "Notice", true);
         }
     }
 
@@ -381,12 +415,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
     }
-    function showModal(isSuccess, message, customTitle) {
+    function showModal(isSuccess, message, customTitle, isAlert = false) {
         modal.classList.remove('hidden');
         modalTitle.textContent = customTitle || (isSuccess ? 'Awesome!' : 'Oops!');
         modalMessage.innerHTML = message;
-        if (puzzlesCompleted >= totalPuzzlesInGame) { nextWordBtn.textContent = 'Finish Game'; }
-        else { nextWordBtn.textContent = 'Next Puzzle'; }
+        isAlertModal = isAlert;
+        if (isAlert) {
+            nextWordBtn.textContent = 'OK';
+        } else {
+            if (puzzlesCompleted >= totalPuzzlesInGame) { nextWordBtn.textContent = 'Finish Game'; }
+            else { nextWordBtn.textContent = 'Next Puzzle'; }
+        }
     }
 
     function checkCompletion() {
@@ -396,6 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isCorrect) {
             updateScore(25);
             myConfetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+            playSound(correctSound);
             
             if (playerData.difficulty === 'hard') {
                 let messageHtml = `<div class="flex flex-col gap-2 mt-2 items-center">`;
@@ -417,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             puzzleContainer.classList.add('shake');
             setTimeout(() => puzzleContainer.classList.remove('shake'), 500);
+            playSound(failSound);
         }
     }
 
@@ -447,7 +488,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startTimer() { clearInterval(timerInterval); timerInterval = setInterval(() => { timeLeft--; timerDisplay.textContent = `Time: ${timeLeft}`; if (timeLeft <= 0) { clearInterval(timerInterval); endGame(); } }, 1000); }
     function updateScore(points) { if (points !== 0) score += points; scoreDisplay.textContent = `Score: ${score}`; if (points !== 0) { const flashClass = points > 0 ? 'flash-green' : 'flash-red'; scoreDisplay.classList.add(flashClass); setTimeout(() => scoreDisplay.classList.remove(flashClass), 500); } }
-    function toggleMusic() { isMusicOn = !isMusicOn; if (isMusicOn) { bgMusic.play(); musicToggle.textContent = '🔊'; } else { bgMusic.pause(); musicToggle.textContent = '🔇'; } }
+    function toggleMusic() {
+        isMusicOn = !isMusicOn;
+        if (isMusicOn) {
+            bgMusic.volume = 0.15;
+            bgMusic.play();
+            musicToggle.textContent = '🔊';
+        } else {
+            bgMusic.pause();
+            musicToggle.textContent = '🔇';
+        }
+    }
     function createLetterTile(letter) { const tile = document.createElement('div'); tile.className = 'letter-box'; tile.textContent = letter; tile.draggable = true; tile.addEventListener('dragstart', handleDragStart); tile.addEventListener('dragend', handleDragEnd); lettersContainer.appendChild(tile); }
     function maskWord(word) { return word.length <= 2 ? word : `${word[0]}${' _ '.repeat(word.length - 2)}${word[word.length - 1]}`; }
     function toTitleCase(str) { return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()); }
@@ -461,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             finalScore.textContent = score;
             totalPossibleScoreDisplay.textContent = totalPossibleScore;
             certificateModal.classList.remove('hidden');
-            cheerSound.play();
+            playSound(cheerSound);
         } else {
             gameOverModal.classList.remove('hidden');
         }
@@ -481,11 +532,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         files: [file]
                     });
                 } else {
-                    alert('Sharing is not supported on this browser.');
+                    showModal(false, 'Sharing is not supported on this browser.', 'Notice', true);
                 }
             }, 'image/png');
         } catch (err) {
-            alert('Oops, something went wrong while sharing.');
+            showModal(false, 'Oops, something went wrong while sharing.', 'Oops!', true);
         }
     }
 });
