@@ -22,27 +22,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordData = {
         easy: {
             Words: [
-                { word: "CAT", img: "cute cat" }, { word: "COW", img: "cow" }, { word: "DOG", img: "happy dog" },
-                { word: "ROSE", img: "red rose" }, { word: "GIRL", img: "girl" }, { word: "MOON", img: "full moon" },
-                { word: "SUN", img: "sun" }, { word: "PEN", img: "pen on white background" }, { word: "CAR", img: "red car" },
-                { word: "BUS", img: "school bus" }, { word: "SHIP", img: "ship at sea" }
+                { word: "CAT", img: "cute cat", mrMeaning: "मांजर" }, { word: "COW", img: "cow", mrMeaning: "गाय" }, { word: "DOG", img: "happy dog", mrMeaning: "कुत्रा" },
+                { word: "ROSE", img: "red rose", mrMeaning: "गुलाब" }, { word: "GIRL", img: "girl", mrMeaning: "मुलगी" }, { word: "MOON", img: "full moon", mrMeaning: "चंद्र" },
+                { word: "SUN", img: "sun", mrMeaning: "सूर्य" }, { word: "PEN", img: "pen on white background", mrMeaning: "पेन" }, { word: "CAR", img: "red car", mrMeaning: "कार" },
+                { word: "BUS", img: "school bus", mrMeaning: "बस" }, { word: "SHIP", img: "ship at sea", mrMeaning: "जहाज" }
             ]
         },
         medium: {
             Words: [
-                { word: "LOTUS", img: "lotus" }, { word: "MANGO", img: "ripe mango" }, { word: "PHONE", img: "smartphone" },
-                { word: "TRUCK", img: "truck" }, { word: "SCHOOL", img: "school building" }, { word: "PENCIL", img: "pencil" },
-                { word: "BOARD", img: "chalkboard" }, { word: "WINDOW", img: "house window" }, { word: "GREEN", img: "green leaf" },
-                { word: "CLOCK", img: "wall clock" }, { word: "EIGHT", img: "number eight" }
+                { word: "LOTUS", img: "lotus", mrMeaning: "कमळ" }, { word: "MANGO", img: "ripe mango", mrMeaning: "आंबा" }, { word: "PHONE", img: "smartphone", mrMeaning: "फोन" },
+                { word: "TRUCK", img: "truck", mrMeaning: "ट्रक" }, { word: "SCHOOL", img: "school building", mrMeaning: "शाळा" }, { word: "PENCIL", img: "pencil", mrMeaning: "पेन्सिल" },
+                { word: "BOARD", img: "chalkboard", mrMeaning: "फळा" }, { word: "WINDOW", img: "house window", mrMeaning: "खिडकी" }, { word: "GREEN", img: "green leaf", mrMeaning: "हिरवा" },
+                { word: "CLOCK", img: "wall clock", mrMeaning: "घड्याळ" }, { word: "EIGHT", img: "number eight", mrMeaning: "आठ" }
             ]
         },
         hard: {
             "Animal Crossword": {
                 gridSize: { rows: 5, cols: 5 },
                 words: [
-                    { word: "TIGER", img: "tiger", start: { row: 0, col: 0 }, dir: "h", clue: "National animal of India" },
-                    { word: "GOAT", img: "goat", start: { row: 0, col: 2 }, dir: "v", clue: "A farm animal that gives milk" },
-                    { word: "DOG", img: "golden retriever", start: { row: 1, col: 1 }, dir: "h", clue: "A loyal pet that barks" }
+                    { word: "TIGER", img: "tiger", start: { row: 0, col: 0 }, dir: "h", clue: "National animal of India", mrMeaning: "वाघ" },
+                    { word: "GOAT", img: "goat", start: { row: 0, col: 2 }, dir: "v", clue: "A farm animal that gives milk", mrMeaning: "शेळी" },
+                    { word: "DOG", img: "golden retriever", start: { row: 1, col: 1 }, dir: "h", clue: "A loyal pet that barks", mrMeaning: "कुत्रा" }
                 ],
                 hints: { '0-2': 'G' }
             },
@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "Fruit Crossword": {
                 gridSize: { rows: 5, cols: 5 },
                 words: [
-                    { word: "MANGO", img: "mango slice", start: { row: 0, col: 0 }, dir: "v", clue: "National fruit of India" },
-                    { word: "GRAPE", img: "green grape", start: { row: 3, col: 0 }, dir: "h", clue: "Small fruits that grow in bunches" },
-                    { word: "PEAR", img: "green pear", start: { row: 3, col: 3 }, dir: "vu", clue: "A sweet green fruit" }
+                    { word: "MANGO", img: "mango slice", start: { row: 0, col: 0 }, dir: "v", clue: "National fruit of India", mrMeaning: "आंबा" },
+                    { word: "GRAPE", img: "green grape", start: { row: 3, col: 0 }, dir: "h", clue: "Small fruits that grow in bunches", mrMeaning: "द्राक्ष" },
+                    { word: "PEAR", img: "green pear", start: { row: 3, col: 3 }, dir: "vu", clue: "A sweet green fruit", mrMeaning: "नाशपाती" }
                 ],
                 hints: { '3-0': 'G' }
             },
@@ -60,9 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "Bird Crossword": {
                 gridSize: { rows: 5, cols: 5 },
                 words: [
-                    { word: "CROW", img: "crow bird", start: { row: 2, col: 1 }, dir: "h", clue: "A black bird that says caw caw" },
-                    { word: "OWL", img: "owl", start: { row: 2, col: 3 }, dir: "vu", clue: "A bird that stays awake at night" },
-                    { word: "EAGLE", img: "eagle flying", start: { row: 0, col: 0 }, dir: "h", clue: "A strong bird with sharp eyesight" }
+                    { word: "CROW", img: "crow bird", start: { row: 2, col: 1 }, dir: "h", clue: "A black bird that says caw caw", mrMeaning: "कावळा" },
+                    { word: "OWL", img: "owl", start: { row: 2, col: 3 }, dir: "vu", clue: "A bird that stays awake at night", mrMeaning: "घुबड" },
+                    { word: "EAGLE", img: "eagle flying", start: { row: 0, col: 0 }, dir: "h", clue: "A strong bird with sharp eyesight", mrMeaning: "गरुड" }
                 ],
                 hints: { '1-3': 'W' }
             },
@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "Color Crossword": {
                 gridSize: { rows: 5, cols: 5 },
                 words: [
-                    { word: "RED", img: "red color", start: { row: 0, col: 1 }, dir: "v", clue: "Color of a rose" },
-                    { word: "GREEN", img: "green color", start: { row: 0, col: 0 }, dir: "h", clue: "Color of grass" },
-                    { word: "BLUE", img: "blue color", start: { row: 3, col: 2 }, dir: "vu", clue: "Color of the sky" }
+                    { word: "RED", img: "red color", start: { row: 0, col: 1 }, dir: "v", clue: "Color of a rose", mrMeaning: "लाल" },
+                    { word: "GREEN", img: "green color", start: { row: 0, col: 0 }, dir: "h", clue: "Color of grass", mrMeaning: "हिरवा" },
+                    { word: "BLUE", img: "blue color", start: { row: 3, col: 2 }, dir: "vu", clue: "Color of the sky", mrMeaning: "निळा" }
                 ],
                 hints: { '0-2': 'E' }
             },
@@ -80,9 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "Transport Crossword": {
                 gridSize: { rows: 5, cols: 5 },
                 words: [
-                    { word: "TRUCK", img: "toy truck", start: { row: 0, col: 2 }, dir: "v", clue: "Used to carry heavy goods" },
-                    { word: "BUS", img: "city bus", start: { row: 2, col: 1 }, dir: "h", clue: "Many students travel to school in this" },
-                    { word: "CAR", img: "sports car", start: { row: 1, col: 0 }, dir: "h", clue: "A common family vehicle" }
+                    { word: "TRUCK", img: "toy truck", start: { row: 0, col: 2 }, dir: "v", clue: "Used to carry heavy goods", mrMeaning: "ट्रक" },
+                    { word: "BUS", img: "city bus", start: { row: 2, col: 1 }, dir: "h", clue: "Many students travel to school in this", mrMeaning: "बस" },
+                    { word: "CAR", img: "sports car", start: { row: 1, col: 0 }, dir: "h", clue: "A common family vehicle", mrMeaning: "कार" }
                 ],
                 hints: { '1-2': 'R' }
             },
@@ -90,9 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "Flower Crossword": {
                 gridSize: { rows: 5, cols: 5 },
                 words: [
-                    { word: "ROSE", img: "pink rose", start: { row: 1, col: 0 }, dir: "h", clue: "A flower often given on special days" },
-                    { word: "LOTUS", img: "lotus flower", start: { row: 0, col: 1 }, dir: "v", clue: "National flower of India" },
-                    { word: "LILY", img: "white lily", start: { row: 0, col: 1 }, dir: "h", clue: "A beautiful garden flower" }
+                    { word: "ROSE", img: "pink rose", start: { row: 1, col: 0 }, dir: "h", clue: "A flower often given on special days", mrMeaning: "गुलाब" },
+                    { word: "LOTUS", img: "lotus flower", start: { row: 0, col: 1 }, dir: "v", clue: "National flower of India", mrMeaning: "कमळ" },
+                    { word: "LILY", img: "white lily", start: { row: 0, col: 1 }, dir: "h", clue: "A beautiful garden flower", mrMeaning: "लिली" }
                 ],
                 hints: { '1-1': 'O' }
             },
@@ -100,9 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "Object Crossword": {
                 gridSize: { rows: 5, cols: 5 },
                 words: [
-                    { word: "BOOK", img: "old book", start: { row: 1, col: 1 }, dir: "v", clue: "Something you read" },
-                    { word: "POT", img: "cooking pot", start: { row: 3, col: 0 }, dir: "h", clue: "Used for cooking food" },
-                    { word: "LAMP", img: "desk lamp", start: { row: 0, col: 0 }, dir: "v", clue: "Gives light in a room" }
+                    { word: "BOOK", img: "old book", start: { row: 1, col: 1 }, dir: "v", clue: "Something you read", mrMeaning: "पुस्तक" },
+                    { word: "POT", img: "cooking pot", start: { row: 3, col: 0 }, dir: "h", clue: "Used for cooking food", mrMeaning: "भांडे" },
+                    { word: "LAMP", img: "desk lamp", start: { row: 0, col: 0 }, dir: "v", clue: "Gives light in a room", mrMeaning: "दिवा" }
                 ],
                 hints: { '3-1': 'O' }
             }
@@ -381,10 +381,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
     }
-    function showModal(isSuccess, message) {
+    function showModal(isSuccess, message, customTitle) {
         modal.classList.remove('hidden');
-        modalTitle.textContent = isSuccess ? 'Awesome!' : 'Oops!';
-        modalMessage.textContent = message;
+        modalTitle.textContent = customTitle || (isSuccess ? 'Awesome!' : 'Oops!');
+        modalMessage.innerHTML = message;
         if (puzzlesCompleted >= totalPuzzlesInGame) { nextWordBtn.textContent = 'Finish Game'; }
         else { nextWordBtn.textContent = 'Next Puzzle'; }
     }
@@ -396,7 +396,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isCorrect) {
             updateScore(25);
             myConfetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
-            showModal(true, `You solved it correctly!`);
+            
+            if (playerData.difficulty === 'hard') {
+                let messageHtml = `<div class="flex flex-col gap-2 mt-2 items-center">`;
+                currentLevelData.words.forEach(w => {
+                    messageHtml += `<div class="text-xl font-bold text-violet-700">${w.word} &rarr; <span class="text-green-600">${w.mrMeaning}</span></div>`;
+                });
+                messageHtml += `</div>`;
+                showModal(true, messageHtml, '🎉 Crossword Solved!');
+            } else {
+                const messageHtml = `
+                    <div class="text-center">
+                        <div class="text-3xl font-extrabold text-violet-700 mb-4">${currentLevelData.word}</div>
+                        <div class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Marathi Meaning:</div>
+                        <div class="text-2xl font-bold text-green-600">${currentLevelData.mrMeaning}</div>
+                    </div>
+                `;
+                showModal(true, messageHtml, '🎉 Correct!');
+            }
         } else {
             puzzleContainer.classList.add('shake');
             setTimeout(() => puzzleContainer.classList.remove('shake'), 500);
