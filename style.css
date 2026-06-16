@@ -104,7 +104,10 @@ body {
     padding: 1rem;
     border-radius: 1.5rem;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+.letters-box.crossword-mode {
+    max-width: 44rem;
 }
 
 /* Letter Tiles & Slots */
@@ -147,7 +150,7 @@ body {
 }
 
 /* Modals */
-.modal-container { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 1; transition: opacity 0.3s ease; z-index: 100; backdrop-filter: blur(4px); }
+.modal-container { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; opacity: 1; transition: opacity 0.3s ease; z-index: 100; backdrop-filter: blur(4px); }
 .modal-container.hidden { opacity: 0; pointer-events: none; }
 .modal-content { 
     background: white; 
@@ -161,13 +164,18 @@ body {
     transition: transform 0.3s ease;
     max-height: 90vh;
     overflow-y: auto;
+    margin: auto 0;
 }
 .modal-container.hidden .modal-content { transform: scale(0.95); }
 .modal-header { font-size: 1.75rem; font-weight: 600; margin-bottom: 1rem; color: #4338ca; }
 .modal-text { color: #4b5563; margin-bottom: 1.5rem; }
 
+#certificate-modal {
+    padding-top: 3.5rem;
+}
+
 /* Certificate Panel */
-.certificate-content { background-image: radial-gradient(#ffffff 70%, #fffbeb); border: 10px solid #fde68a; padding: 2rem; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 32rem; text-align: center; color: #374151; position: relative; }
+.certificate-content { background-image: radial-gradient(#ffffff 70%, #fffbeb); border: 10px solid #fde68a; padding: 2rem; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 32rem; text-align: center; color: #374151; position: relative; margin: auto 0; }
 .certificate-content::before { content: '🏆'; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); font-size: 5rem; line-height: 1; }
 .cert-title { font-size: 2.5rem; font-weight: 600; color: #1d4ed8; margin-top: 2rem; margin-bottom: 0.5rem; }
 .cert-text { margin-bottom: 1rem; }
@@ -202,13 +210,30 @@ body {
 }
 .puzzle-slot.impassable { background-color: transparent; border: none; }
 
+#crossword-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+@media (min-width: 560px) {
+    #crossword-layout {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: start;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+}
+
 #clues-container {
     background: white; padding: 1rem; border-radius: 1rem; font-size: 0.95rem; font-weight: 500; color: #4b5563;
-    width: 280px; max-width: 100%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    width: 100%; max-width: 280px; min-width: 220px; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 #clues-container h3 { font-size: 1.25rem; font-weight: 600; color: #5b21b6; margin-bottom: 0.5rem; text-align: center; border-bottom: 2px solid #ddd6fe; padding-bottom: 0.5rem; }
 #clues-container ul { list-style-type: none; padding: 0; margin-top: 0.5rem; }
-#clues-container li { padding: 0.4rem 0.5rem; line-height: 1.4; border-bottom: 1px dashed #f3f4f6; }
+#clues-container li { padding: 0.6rem 0.5rem; line-height: 1.6; border-bottom: 1px dashed #f3f4f6; }
 #clues-container li:last-child { border-bottom: none; }
 
 /* Keyframe Animations */
@@ -218,6 +243,21 @@ body {
 .flash-green { animation: flash-green 0.5s ease; }
 @keyframes flash-red { 50% { background-color: #f87171; color: white; } }
 .flash-red { animation: flash-red 0.5s ease; }
+
+/* Picture Hint Image styling */
+#picture-hint-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+}
+
+#controls {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+#category-display {
+    margin-bottom: 1.25rem;
+}
 
 /* Mobile Responsiveness */
 .game-stats {
@@ -232,9 +272,13 @@ body {
         gap: 0.5rem;
         padding: 0.75rem;
     }
+    #welcome-message {
+        font-size: 1.125rem;
+        text-align: center;
+    }
     .info-box {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
+        padding: 0.25rem 0.4rem;
+        font-size: 0.8rem;
     }
     .game-stats {
         width: 100%;

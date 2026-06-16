@@ -259,9 +259,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const difficulty = playerData.difficulty;
         if (difficulty === 'easy' || difficulty === 'medium') {
             cluesContainer.classList.add('hidden');
+            lettersContainer.classList.remove('crossword-mode');
             generateSingleWordUI(difficulty);
         } else {
             cluesContainer.classList.remove('hidden');
+            lettersContainer.classList.add('crossword-mode');
             generateCrosswordUI();
         }
     }
