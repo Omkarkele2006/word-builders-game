@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function initialUserInteraction() {
         hasInteracted = true;
-        Tone.start();
         if (!isMusicOn) playMusic();
     }
     
