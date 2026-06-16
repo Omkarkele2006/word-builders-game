@@ -139,28 +139,42 @@ document.addEventListener('DOMContentLoaded', () => {
         closePictureHintBtn.addEventListener('click', () => pictureHintModal.classList.add('hidden'));
         aboutBtn.addEventListener('click', () => aboutModal.classList.remove('hidden'));
         closeAboutBtn.addEventListener('click', () => aboutModal.classList.add('hidden'));
-        document.body.addEventListener('click', initialUserInteraction, { once: true });
+        
+        const triggerInteraction = () => {
+            initialUserInteraction();
+            ['click', 'focusin', 'input', 'keydown'].forEach(evt => {
+                document.removeEventListener(evt, triggerInteraction);
+            });
+        };
+        ['click', 'focusin', 'input', 'keydown'].forEach(evt => {
+            document.addEventListener(evt, triggerInteraction);
+        });
     }
 
     function initialUserInteraction() {
+        if (hasInteracted) return;
         hasInteracted = true;
-        if (!isMusicOn) playMusic();
+        playMusic();
     }
 
     function playSound(sound) {
         if (isMusicOn && sound) {
             if (sound === bgMusic) {
-                sound.volume = 0.15;
+                if (!splashScreen.classList.contains('hidden')) {
+                    sound.volume = 0.20;
+                } else {
+                    sound.volume = 0.10;
+                }
             } else if (sound === correctSound) {
-                sound.volume = 0.3;
+                sound.volume = 0.40;
             } else if (sound === cheerSound) {
-                sound.volume = 0.3;
+                sound.volume = 0.40;
             } else if (sound === tapSound) {
-                sound.volume = 0.2;
+                sound.volume = 0.30;
             } else if (sound === failSound) {
-                sound.volume = 0.25;
+                sound.volume = 0.35;
             } else if (sound === sparkleSound) {
-                sound.volume = 0.3;
+                sound.volume = 0.40;
             }
             sound.currentTime = 0;
             sound.play().catch(err => {});
@@ -170,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function playMusic() {
         if (hasInteracted) {
             try {
-                bgMusic.volume = 0.15;
+                bgMusic.volume = 0.20;
                 bgMusic.play();
                 isMusicOn = true;
                 musicToggle.textContent = '🔊';
@@ -210,7 +224,19 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'hard': initialTime = 120; break;
         }
 
-        bgMusic.pause(); isMusicOn = false; musicToggle.textContent = '🔇';
+        if (isMusicOn) {
+            bgMusic.volume = 0.10;
+            musicToggle.textContent = '🔊';
+        } else {
+            try {
+                bgMusic.volume = 0.10;
+                bgMusic.play();
+                isMusicOn = true;
+                musicToggle.textContent = '🔊';
+            } catch (err) {
+                musicToggle.textContent = '🔇';
+            }
+        }
         welcomeMessage.textContent = `Let's go, ${playerData.firstName}!`;
         splashScreen.classList.add('hidden'); gameContainer.classList.remove('hidden'); gameContainer.classList.add('flex');
         startTimer();
@@ -491,7 +517,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleMusic() {
         isMusicOn = !isMusicOn;
         if (isMusicOn) {
-            bgMusic.volume = 0.15;
+            if (!splashScreen.classList.contains('hidden')) {
+                bgMusic.volume = 0.20;
+            } else {
+                bgMusic.volume = 0.10;
+            }
             bgMusic.play();
             musicToggle.textContent = '🔊';
         } else {
