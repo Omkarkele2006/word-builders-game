@@ -259,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         words.forEach(({ word }, index) => { const li = document.createElement('li'); li.textContent = `${index + 1}. ${maskWord(word)}`; clueList.appendChild(li); });
         cluesContainer.appendChild(clueList);
 
+        const addedCoordinates = new Set();
         words.forEach(({ word, start, dir }) => {
             for (let i = 0; i < word.length; i++) {
                 let r = start.row;
@@ -270,8 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 gridSolution[r][c] = word[i];
 
-                if (!hints[`${r}-${c}`]) {
+                const coordKey = `${r}-${c}`;
+                if (!hints[coordKey] && !addedCoordinates.has(coordKey)) {
                     lettersToPlace[word[i]] = (lettersToPlace[word[i]] || 0) + 1;
+                    addedCoordinates.add(coordKey);
                 }
             }
         });
